@@ -1,0 +1,30 @@
+### Gradle ###
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### VS Code ###
+.vscode/
+
+### macOS ###
+.DS_Store
+
+# ==============================
+# SECRETOS — NUNCA SUBIR
+# ==============================
+# Solo se ignoran los archivos de entorno (credenciales).
+# application.properties SÍ se sube; se incluye un .example del de dev.
+src/main/resources/application-dev.properties
+src/main/resources/application-pdn.properties
+*.env

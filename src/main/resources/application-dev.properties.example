@@ -1,0 +1,6 @@
+# Copia este archivo como application-dev.properties y pon tus datos.
+# application-dev.properties está en .gitignore: NUNCA se sube a GitHub.
+server.port=8090
+spring.datasource.url=jdbc:postgresql://localhost:5432/entrevistia
+spring.datasource.username=TU_USUARIO
+spring.datasource.password=TU_CONTRASENA
