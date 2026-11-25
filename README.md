@@ -34,7 +34,11 @@ src/main/java/mx/edu/tecdesoftware/entrevistia/
    createdb -U postgres entrevistia
    psql -U postgres -d entrevistia -f db/schema.sql
    psql -U postgres -d entrevistia -f db/data.sql
+   psql -U postgres -d entrevistia -f db/images.sql
    ```
+
+   `images.sql` guarda en `image_url` los logos que están en el bucket público
+   `productos` de Supabase Storage. Los PNG originales están en `db/logos/`.
 
 2. Copiar `src/main/resources/application-dev.properties.example` como
    `application-dev.properties` y poner usuario y contraseña de PostgreSQL.
