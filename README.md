@@ -119,6 +119,25 @@ nunca se muestran vacantes inventadas. La llave vive solo en el servidor.
 Cada CV está ligado al `uid` del token de Firebase: nadie puede ver ni borrar
 el CV de otra persona. Para pruebas hay un CV ficticio en `db/sample/`.
 
+## Despliegue (Render + Supabase)
+
+- **Base de datos:** PostgreSQL de Supabase (Session pooler). Se carga con
+  `db/schema.sql`, `db/data.sql` y `db/images.sql`.
+- **API:** Render construye la imagen con el `Dockerfile` y usa el perfil
+  `prod` (`application-prod.properties`), que no tiene secretos: todo se lee de
+  variables de entorno configuradas en Render.
+
+| Variable | Ejemplo |
+|---|---|
+| `DB_URL` | `jdbc:postgresql://<host>.pooler.supabase.com:5432/postgres?sslmode=require` |
+| `DB_USER` | `postgres.<proyecto>` |
+| `DB_PASSWORD` | contraseña de la base |
+| `FIREBASE_PROJECT_ID` | ID del proyecto de Firebase |
+| `GEMINI_API_KEY` | llave de Gemini |
+
+En el plan gratuito el servicio se duerme tras 15 min sin uso; la primera
+petición tarda alrededor de un minuto en despertarlo.
+
 ## Equivalencias con la rúbrica
 
 | Rúbrica | EntrevistIA |
