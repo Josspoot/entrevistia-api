@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import mx.edu.tecdesoftware.entrevistia.domain.Vacancy;
@@ -66,6 +67,8 @@ public class VacancyController {
     }
 
     @PostMapping("")
+    @SecurityRequirement(name = "firebase")
+    @ApiResponse(responseCode = "401", description = "Login required")
     @Operation(summary = "Create a vacancy", description = "Register a new vacancy and return it",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true,
                     content = @Content(examples = @ExampleObject(name = "Example vacancy", value = EXAMPLE))))
@@ -76,6 +79,8 @@ public class VacancyController {
     }
 
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "firebase")
+    @ApiResponse(responseCode = "401", description = "Login required")
     @Operation(summary = "Update a vacancy", description = "Replace the data of an existing vacancy",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true,
                     content = @Content(examples = @ExampleObject(name = "Example vacancy", value = EXAMPLE))))
@@ -92,6 +97,8 @@ public class VacancyController {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "firebase")
+    @ApiResponse(responseCode = "401", description = "Login required")
     @Operation(summary = "Delete a vacancy", description = "Remove the vacancy with the given ID")
     @ApiResponse(responseCode = "204", description = "Vacancy deleted")
     @ApiResponse(responseCode = "404", description = "Vacancy not found")

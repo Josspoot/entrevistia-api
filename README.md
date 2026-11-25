@@ -64,7 +64,15 @@ src/main/java/mx/edu/tecdesoftware/entrevistia/
 | `PUT` | `/vacancies/{id}` | Actualizar | `200` / `400` / `404` |
 | `DELETE` | `/vacancies/{id}` | Eliminar | `204` / `404` |
 | `GET` | `/categories` | Áreas de trabajo | `200` |
-| `POST` | `/assistant/messages` | Pregunta al asistente con IA | `200` / `400` / `429` / `503` |
+| `POST` | `/assistant/messages` | Pregunta al asistente con IA 🔒 | `200` / `400` / `401` / `429` / `503` |
+| `GET` | `/resumes` | Mis CVs 🔒 | `200` / `401` |
+| `POST` | `/resumes` | Subir CV en PDF (máx. 5 MB) 🔒 | `201` / `400` / `413` |
+| `DELETE` | `/resumes/{id}` | Borrar CV y sus revisiones 🔒 | `204` / `404` |
+| `POST` | `/resumes/{id}/reviews` | Revisar CV, opcional `vacancyId` 🔒 | `201` / `404` / `503` |
+| `GET` | `/resumes/{id}/reviews/latest` | Última revisión 🔒 | `200` / `404` |
+
+🔒 Requiere `Authorization: Bearer <token de Firebase>`. También `POST`, `PUT` y
+`DELETE` de `/vacancies`: leer el catálogo es público, modificarlo no.
 
 Ejemplo de vacante:
 
@@ -96,6 +104,20 @@ nunca se muestran vacantes inventadas. La llave vive solo en el servidor.
 ```json
 { "messages": [ { "role": "user", "text": "¿Qué vacante de tecnología paga más?" } ] }
 ```
+
+## Revisor de CV
+
+1. Spring valida que el archivo sea un PDF real (empieza con `%PDF`), de máximo
+   5 MB y 10 páginas, y extrae el texto con PDFBox.
+2. Gemini **detecta**: secciones presentes, calidad de 1 a 5 (logros, claridad,
+   ortografía), fortalezas, mejoras con ejemplo y qué requisitos de la vacante
+   demuestra el CV, con la cita como evidencia.
+3. `ResumeScorer` **calcula** el puntaje con una fórmula fija (probada en
+   `ResumeScorerTest`): estructura 40 + calidad 30 + ajuste con la vacante 30.
+   Sin vacante, el total se escala sobre 70.
+
+Cada CV está ligado al `uid` del token de Firebase: nadie puede ver ni borrar
+el CV de otra persona. Para pruebas hay un CV ficticio en `db/sample/`.
 
 ## Equivalencias con la rúbrica
 

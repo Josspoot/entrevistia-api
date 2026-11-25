@@ -7,3 +7,6 @@ spring.datasource.password=TU_CONTRASENA
 
 # Llave de Gemini: https://aistudio.google.com/apikey
 gemini.api-key=TU_LLAVE_DE_GEMINI
+
+# ID del proyecto de Firebase (valida los tokens de /resumes)
+firebase.project-id=TU_PROYECTO_DE_FIREBASE
