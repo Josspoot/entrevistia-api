@@ -41,7 +41,8 @@ src/main/java/mx/edu/tecdesoftware/entrevistia/
    `productos` de Supabase Storage. Los PNG originales están en `db/logos/`.
 
 2. Copiar `src/main/resources/application-dev.properties.example` como
-   `application-dev.properties` y poner usuario y contraseña de PostgreSQL.
+   `application-dev.properties` y poner usuario y contraseña de PostgreSQL,
+   y la llave de Gemini (`gemini.api-key`) para el asistente.
    Ese archivo está en `.gitignore` y **nunca** se sube.
 
 3. Ejecutar:
@@ -63,6 +64,7 @@ src/main/java/mx/edu/tecdesoftware/entrevistia/
 | `PUT` | `/vacancies/{id}` | Actualizar | `200` / `400` / `404` |
 | `DELETE` | `/vacancies/{id}` | Eliminar | `204` / `404` |
 | `GET` | `/categories` | Áreas de trabajo | `200` |
+| `POST` | `/assistant/messages` | Pregunta al asistente con IA | `200` / `400` / `429` / `503` |
 
 Ejemplo de vacante:
 
@@ -82,6 +84,17 @@ Ejemplo de vacante:
   "active": true,
   "category": { "categoryId": 1, "category": "Tecnología", "active": true }
 }
+```
+
+## Asistente de vacantes (Gemini)
+
+`POST /assistant/messages` recibe la conversación y en cada pregunta le inyecta
+a Gemini el catálogo activo. Gemini responde JSON con el texto y los IDs de las
+vacantes que menciona; el backend descarta cualquier ID que no exista, así que
+nunca se muestran vacantes inventadas. La llave vive solo en el servidor.
+
+```json
+{ "messages": [ { "role": "user", "text": "¿Qué vacante de tecnología paga más?" } ] }
 ```
 
 ## Equivalencias con la rúbrica
